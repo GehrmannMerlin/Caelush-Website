@@ -20,7 +20,7 @@ The server already renews its `api.caelush.com.cn` certificate through its Certb
 1. Run `pnpm generate` from the repository root and use only `.output/public/` as the website payload.
 2. Create `/opt/data/caelush-website/releases/<git-sha>` and upload the contents of `.output/public/` there. Files and directories must be readable by UID 101 in the Nginx container.
 3. Point `/opt/data/caelush-website/current` to that release, preserving the previous target for rollback.
-4. Install this repository's `deploy.conf`, `deploy/compose.yaml`, and `deploy/site.conf` under `/opt/apps/caelush-website`; create the server-local `deploy.env` from the example.
+4. Install this repository's root `deploy.conf`, `deploy/compose.yaml`, and `deploy/site.conf` under `/opt/apps/caelush-website`; create the server-local `deploy.env` from the example.
 5. Run `/opt/scripts/deploy-preflight /opt/apps/caelush-website`, then `/opt/scripts/deploy-project /opt/apps/caelush-website`.
 6. Check the container health, the generated homepage and brand assets, both HTTPS hostnames and the `www` redirect, then confirm the existing API health endpoint remains ready.
 
