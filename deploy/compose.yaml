@@ -5,11 +5,12 @@ services:
     image: ${NGINX_IMAGE:?NGINX_IMAGE must be pinned to the validated local image}
     pull_policy: never
     entrypoint: [nginx]
-    command: ["-g", "daemon off; pid /tmp/nginx.pid;"]
+    command: ["-g", "daemon off;"]
     user: "101:101"
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=16m,mode=1777
+      - /run:rw,noexec,nosuid,size=4m,mode=1777
     cap_drop:
       - ALL
     security_opt:
