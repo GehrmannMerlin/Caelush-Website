@@ -6,6 +6,7 @@ The production setup serves the Nuxt-generated `.output/public/` files through a
 
 - `compose.yaml` runs the Nginx image already validated on the server, pinned by digest in `deploy.env.example`.
 - `site.conf` serves the read-only release at `/srv/site/current` on the internal port 8080.
+- Because the container runs as UID 101, the bind-mounted `deploy/site.conf` must be readable by that UID (mode `0644`); keep the server-local `deploy.env` restricted (mode `0600`).
 - The server data directory is mounted at `/opt/data/caelush-website`; each release belongs in `releases/<git-sha>` and `current` is a symlink to the active release. Changing that symlink provides a fast rollback without rebuilding the container.
 - The real `/opt/apps/caelush-website/deploy.env` is server-local and must not be committed. Start from `deploy.env.example` and retain `PULL_IMAGES=false` when using the preloaded image.
 
