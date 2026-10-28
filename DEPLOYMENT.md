@@ -29,7 +29,7 @@ Nuxt writes the static site to `.output/public/`. This directory contains `index
 3. Configure HTTPS for `caelush.com.cn` and `www.caelush.com.cn` and serve the generated files as static content.
 4. Configure HTTPS and static download handling for `releases.caelush.com.cn` separately when the installer is ready.
 
-Do not replace or overwrite the existing `api.caelush.com.cn` Nginx configuration while adding the website or release host configuration. This project and procedure do not connect to production, change DNS, upload files, or publish the website.
+The production server keeps the website in a dedicated static Nginx container behind its existing reverse proxy. The root domain is canonical; `www.caelush.com.cn` redirects to it. Deployment files and the server-side release and rollback procedure are in [`deploy/README.md`](deploy/README.md). The website configuration must preserve the existing `api.caelush.com.cn` route and use the server's existing certificate renewal process.
 
 ## Enabling the installer download
 

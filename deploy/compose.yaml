@@ -1,0 +1,43 @@
+name: ${PROJECT_NAME:?PROJECT_NAME must be set}
+
+services:
+  site:
+    image: ${NGINX_IMAGE:?NGINX_IMAGE must be pinned to the validated local image}
+    pull_policy: never
+    entrypoint: [nginx]
+    command: ["-g", "daemon off; pid /tmp/nginx.pid;"]
+    user: "101:101"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    mem_limit: 96m
+    cpus: 0.25
+    restart: unless-stopped
+    volumes:
+      - ${SITE_DATA:?SITE_DATA must be set}:/srv/site:ro
+      - ./site.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      edge:
+        aliases:
+          - caelush-website
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, http://127.0.0.1:8080/]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: local
+      options:
+        max-size: 5m
+        max-file: "3"
+
+networks:
+  edge:
+    name: ${EDGE_NETWORK:?EDGE_NETWORK must be set}
+    external: true
